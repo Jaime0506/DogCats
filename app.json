@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "DogCats",
+    "slug": "DogCats",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/img/logo-inicio-png.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "permissions": [
+        "CAMERA_ROLL",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/img/logo-inicio-png.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.jaime.dogscats",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAAYYtrtgIbAWuU08MyqNw13AnVnLY6SpE"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
