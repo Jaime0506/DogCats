@@ -21,7 +21,7 @@ export default function UserGuest(){
             </Text>
             <View style={styles.containerBtn}>
                 <Button
-                    title="Ver tu perfil"
+                    title="Inicia Ahora"
                     buttonStyle={styles.btnSyle}
                     containerStyle={styles.btnContainer}
                     onPress={()=> {

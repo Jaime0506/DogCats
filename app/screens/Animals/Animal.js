@@ -1,29 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, ScrollView, } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { Button } from 'react-native-elements';
 
-//import componentes
-
-import Loading from "../../Components/Loading";
-import CarouselImages from "../../Components/CarouselImages";
-import Map from "../../Components/Map";
-
-//import firebase for use firestore
+//import fire store
 
 import { firebaseApp } from "../../utils/firebase";
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 import "firebase/firestore";
 
 const db = firebase.firestore(firebaseApp);
+
+//import components
+import Loading from '../../Components/Loading';
+import CarouselImages from "../../Components/CarouselImages";
+import Map from "../../Components/Map";
+
 const screenWidth = Dimensions.get("window").width;
+
 
 export default function Animal(props) {
     const { navigation, route } = props;
-    const { id, name } = route.params;
-    const [dataAnimal, setDataAnimal] = useState(null);
+    const { id, name, } = route.params;
+    const [dataRegister, setDataRegister] = useState(null);
+    const [user, setUser] = useState({});
+    const [valdiateUser, setValdiateUser] = useState({});
+    let uid = valdiateUser.uid;
+    let mostrar;
 
     navigation.setOptions({
-        title: name
-    })
+        title: name,
+    });
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((userInfo) => {
+            setUser(userInfo);
+            if (userInfo) setValdiateUser(userInfo);
+        })
+    }, []);
 
     useEffect(() => {
         db.collection("registers")
@@ -32,58 +45,71 @@ export default function Animal(props) {
             .then((response) => {
                 const data = response.data();
                 data.id = response.id;
-                setDataAnimal(data);
-            })
+                setDataRegister(data);
+            })     
     }, []);
 
-    // console.log(dataAnimal);
+    if (!dataRegister) return <Loading isVisible={true} text="Cargando..."/>
 
-    if(!dataAnimal) return <Loading isVisible={true} text="Cargando..."/>
+    if (uid == "Sm9ZeHCglEXBU4bTWOiLHlBZ4t13") mostrar = true;
 
     return (
-        <ScrollView style={styles.ScrollView}>
-            <CarouselImages 
-                arrayImages={dataAnimal.images} 
-                height={250} 
-                width={screenWidth}                    
+        <ScrollView vertical style={styles.scrollView}>
+            <CarouselImages
+                arrayImages={dataRegister.images}
+                height={250}
+                width={screenWidth}
             />
-            <DataRegister 
-                name={dataAnimal.name} 
-                descripccion={dataAnimal.descripccion}                        
+            <TitleRegister 
+                name={dataRegister.name}
+                descripccion={dataRegister.descripccion}
             />
-            <AnimalViewMaps
-                location={dataAnimal.location}
-                name={dataAnimal.name}
-                address={dataAnimal.address}
+            <RegisterInfo
+                location={dataRegister.location}
+                name={dataRegister.name}
+                addres={dataRegister.addres}
             />
+            {mostrar && (
+                <View style={styles.contenedorIcon}>
+                    <Button
+                        title="Adoptar a este animal"
+                        containerStyle={styles.btnContainer}
+                        buttonStyle={styles.btnStyle}
+                    />
+                </View>                
+            )}            
         </ScrollView>
-    );
-};
+    )
+};                
 
-function DataRegister(props){
-    const { name, descripccion } = props;
-    return(
-        <View style={styles.viewRegistersTitle}>            
-            <Text style={styles.nameRegister}>{name}</Text>
-            <Text style={styles.descripccion}>{descripccion}</Text>            
+function TitleRegister(props) {
+    const {name, descripccion } = props;
+
+    return (
+        <View style={styles.viewRegistersTitle}>
+            <View style={{flexDirection: "row"}}>
+                <Text style={styles.nameRegister}>{name}</Text>
+            </View>
+            <Text style={styles.descripccion}>{descripccion}</Text>
         </View>
     )
 };
-function AnimalViewMaps(props) {
-    const {location, address, name} = props;
-    return(
+function RegisterInfo(props){
+    const { location, addres, name} = props;
+
+    return (
         <View style={styles.viewAnimalMaps}>
-            <Text style={styles.textUbicacion}>Ubicacion del Animal</Text>
+            <Text style={styles.textUbicacion}>Ubicacion del animal</Text>
             <Map
                 location={location}
                 name={name}
                 height={200}
             />
         </View>
-    );
+    )
 }
 const styles = StyleSheet.create({
-    ScrollView: {
+    scrollView: {
         flex: 1,
         backgroundColor: "#fff",
     },
@@ -105,7 +131,16 @@ const styles = StyleSheet.create({
     },
     textUbicacion: {
         marginBottom: 10,
-        fontWeight: 'bold',
-        fontSize: 20,
+    },
+    contenedorIcon: {
+        flex: 1,
+        alignItems: "center",
+        marginBottom: 15,
+    },  
+    btnContainer: {
+        width: "93%",
+    },
+    btnStyle: {
+        backgroundColor: "#FF6800",
     },
 })

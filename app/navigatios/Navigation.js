@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 import AnimalsStack from "./AnimalsStack";
-import SearchStack from "./SearchStack";
+import AdopccionesStack from "./AdopccionesStack";
 import InfoStack from "./InfoStack";
 import AccountStack from "./AccountStack";
 
@@ -26,12 +26,12 @@ export default function Navigation(){
                 <Tab.Screen
                     name="animals"
                     component={AnimalsStack}
-                    options={{title: "Animales"}}
+                    options={{title: "Registros"}}
                 />
                 <Tab.Screen
-                    name="search"
-                    component={SearchStack}
-                    options={{title: "Buscar"}}
+                    name="adopccion"
+                    component={AdopccionesStack}
+                    options={{title: "Adopccion"}}
                 />
                 <Tab.Screen
                     name="account"
@@ -54,8 +54,8 @@ function screenOption(route,color) {
         case "animals":
             iconName = "dog"
             break;
-        case "search":
-            iconName = "magnify"  
+        case "adopccion":
+            iconName = "pets"  
             break;
         case "account":
             iconName = "account"
@@ -65,6 +65,8 @@ function screenOption(route,color) {
             break;          
     }
     return(
-        <Icon type="material-community" name={iconName} size={22} color={color}/>
+        iconName == "pets" ? ( <Icon type="material-icons" name={iconName} size={22} color={color}/>) : (
+            <Icon type="material-community" name={iconName} size={22} color={color}/>
+        )     
     )
 }
