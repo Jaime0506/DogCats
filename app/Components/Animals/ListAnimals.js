@@ -25,7 +25,7 @@ export default function ListAnimals(props) {
                 </View>
             ) : (
                 <View style={styles.loaderContainerCenter}>
-                    <ActivityIndicator size="large"/> 
+                    <ActivityIndicator size="large" color="#000"/> 
                     <Text style={styles.textLoader}>Cargando...</Text>
                 </View>
             )}
@@ -50,7 +50,7 @@ function AnimalData(props) {
                 <View style={styles.viewAnimalImage}>
                     <Image
                         resizeMode="cover"
-                        PlaceholderContent={<ActivityIndicator color="fff"/>}
+                        PlaceholderContent={<ActivityIndicator size="large"/>}
                         source={
                             firstImage ? 
                                 {uri: firstImage}
@@ -76,7 +76,7 @@ function Footer(props) {
     if (loading) {
         return (
             <View style={styles.loaderContainerCenter}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" color="#000"/>
             </View>
         )
     } else {

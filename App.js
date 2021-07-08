@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navigation from "./app/navigatios/Navigation";
-import {YellowBox } from "react-native";
+import {YellowBox, LogBox } from "react-native";
 import { firebaseApp } from "./app/utils/firebase";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
+LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
-  
   return (
     <Navigation/>
   );

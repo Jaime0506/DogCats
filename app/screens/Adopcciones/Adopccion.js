@@ -1,108 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
 import { Button } from 'react-native-elements';
-
-//import fire store
 
 import { firebaseApp } from "../../utils/firebase";
 import firebase from 'firebase/app';
 import "firebase/firestore";
 
+import CarouselImages from '../../Components/CarouselImages';
+import Loading from '../../Components/Loading';
+import Map from '../../Components/Map';
+
 const db = firebase.firestore(firebaseApp);
 
-//import components
-import Loading from '../../Components/Loading';
-import CarouselImages from "../../Components/CarouselImages";
-import Map from "../../Components/Map";
+const widthScreen = Dimensions.get("window").width;
 
-const screenWidth = Dimensions.get("window").width;
-
-
-export default function Animal(props) {
+export default function Adopccion(props) {
     const { navigation, route } = props;
-    const { id, name, } = route.params;
+    const { id, name } = route.params;
+
     const [dataRegister, setDataRegister] = useState(null);
-    const [user, setUser] = useState({});
-    let mostrar;
+    console.log(dataRegister);
 
     useEffect(() => {
         navigation.setOptions({
             title: name,
         });
-    },[])
-
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged((userInfo) => {
-            setUser(userInfo);
-        })
     }, []);
 
     useEffect(() => {
-        db.collection("registers")
+        db.collection(`adoption-register`)
             .doc(id)
             .get()
             .then((response) => {
                 const data = response.data();
                 data.id = response.id;
                 setDataRegister(data);
-            })     
+            });
     }, []);
 
-    if (!dataRegister) return <Loading isVisible={true} text="Cargando..."/>
-
-    if (user) {
-        if (user.uid == "Sm9ZeHCglEXBU4bTWOiLHlBZ4t13") {
-            mostrar = user.uid;
-        }
-    }
+    if (!dataRegister) return <Loading isVisible={true} text="Cargando..."/>;
 
     return (
-        <ScrollView vertical style={styles.scrollView}>
+        <ScrollView>
             <CarouselImages
                 arrayImages={dataRegister.images}
+                width={widthScreen}
                 height={250}
-                width={screenWidth}
             />
             <TitleRegister 
                 name={dataRegister.name}
-                descripccion={dataRegister.descripccion}
+                description={dataRegister.description}
             />
             <RegisterInfo
                 location={dataRegister.location}
                 name={dataRegister.name}
-                addres={dataRegister.addres}
+                address={dataRegister.address}
             />
-            {mostrar && (
-                <View style={styles.contenedorIcon}>
-                    <Button
-                        title="Transferir el registro"
-                        containerStyle={styles.btnContainer}
-                        buttonStyle={styles.btnStyle}
-                        onPress={() => navigation.navigate("adoption-animal",{
-                            id,
-                            name
-                        })}
-                    />
-                </View>                
-            )}            
         </ScrollView>
     )
-};                
+};
 
 function TitleRegister(props) {
-    const {name, descripccion } = props;
+    const {name, description} = props;
 
     return (
-        <View style={styles.viewRegistersTitle}>
+       <View style={styles.viewRegistersTitle}>
             <View style={{flexDirection: "row"}}>
                 <Text style={styles.nameRegister}>{name}</Text>
             </View>
-            <Text style={styles.descripccion}>{descripccion}</Text>
+            <Text style={styles.descripccion}>{description}</Text>
         </View>
     )
 };
+
 function RegisterInfo(props){
-    const { location, addres, name} = props;
+    const { location, address, name} = props;
 
     return (
         <View style={styles.viewAnimalMaps}>
@@ -112,9 +84,11 @@ function RegisterInfo(props){
                 name={name}
                 height={200}
             />
+            <Text style={styles.textAddress}>Direccion: {address}</Text>
         </View>
     )
-}
+};
+
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
@@ -139,6 +113,9 @@ const styles = StyleSheet.create({
     textUbicacion: {
         marginBottom: 10,
     },
+    textAddress: {
+        marginTop: 5,
+    },
     contenedorIcon: {
         flex: 1,
         alignItems: "center",
@@ -149,5 +126,5 @@ const styles = StyleSheet.create({
     },
     btnStyle: {
         backgroundColor: "#FF6800",
-    },
-})
+    }
+});

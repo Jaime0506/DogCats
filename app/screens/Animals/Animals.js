@@ -101,7 +101,7 @@ export default function Animals(props) {
             )}
         </View>
     )
-}
+};
 
 const styles = StyleSheet.create({
     viewBody: {
@@ -113,4 +113,4 @@ const styles = StyleSheet.create({
         bottom: 10,
         right: 10,        
     }
-})
+});

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, ScrollView, StyleSheet, Alert, Dimensions, Text} from "react-native";
 import {Icon, Avatar, Image, Input, Button} from "react-native-elements";
-import {map,size,filter, result} from "lodash";
+import {map,size,filter} from "lodash";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
@@ -38,7 +38,7 @@ export default function AddAnimalsForm(props){
                 descripccion: !dataDescrippcions ? "Todos los campos son obligatorios" : "",
             });
         } else if (size(imageSelected) === 0) {
-            toastRef.current.show("El restaurante debe tener almenos una imagen");
+            toastRef.current.show("El Animal debe tener almenos una imagen");
         } else if (!locationRestaurant){
             setErrors({
                 addres: "No has seleccionado ninguna ubicacion"
@@ -90,8 +90,8 @@ export default function AddAnimalsForm(props){
     }
     return(
         <ScrollView style={styles.scrollView}>
-            <ImageRestaurant
-                imagesRestaurant={imageSelected[0]}
+            <ImageAnimal
+                imagesAnimal={imageSelected[0]}
             />
             <FormAdd
                 setDataName={setDataName}
@@ -122,12 +122,12 @@ export default function AddAnimalsForm(props){
         </ScrollView>
     )
 };
-function ImageRestaurant(props){
-    const {imagesRestaurant} = props;
+function ImageAnimal(props){
+    const {imagesAnimal} = props;
     return(
         <View style={styles.viewFoto}>
             <Image
-                source={imagesRestaurant ? {uri: imagesRestaurant} : require("../../../assets/img/no-image.png")}
+                source={imagesAnimal ? {uri: imagesAnimal} : require("../../../assets/img/no-image.png")}
                 style={{width: widthScreen, height: 200,}}
             />
         </View>

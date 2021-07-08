@@ -4,6 +4,7 @@ import {View, Text} from "react-native";
 import Animals from "../screens/Animals/Animals";
 import AddAnimals from "../screens/Animals/AddAnimals";
 import Animal from '../screens/Animals/Animal';
+import AddAnimalAdoption from '../screens/Animals/AddAnimalAdoption';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,11 @@ export default function AnimalsStack(){
             <Stack.Screen
                 name="animal"
                 component={Animal}
+            />
+            <Stack.Screen
+                name="adoption-animal"
+                component={AddAnimalAdoption}
+                options={{title: "Transferir Registro"}}
             />
         </Stack.Navigator>
     );
