@@ -33,7 +33,7 @@ export default function ChangeEmailForm(props){
             })
         } else {
             setLoading(true)
-            reauthenticate(formData.password)
+            reauthenticate(formData.pasword)
             .then(() => {
                 firebase
                     .auth()

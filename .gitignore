@@ -9,6 +9,7 @@ npm-debug.*
 *.orig.*
 web-build/
 datos.txt
+firebase.js
 
 # macOS
 .DS_Store

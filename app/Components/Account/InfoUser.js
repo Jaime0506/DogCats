@@ -40,6 +40,7 @@ export default function InfoUser(props){
         let numRandomRound = Math.round(numRandom);
         return numRandomRound;      
     };
+
     const uploadImage = async (uri) => {
         setLoadingText("Actualizando avatar");
         setLoading(true);

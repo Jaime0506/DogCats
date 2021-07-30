@@ -1,14 +1,13 @@
 {
   "expo": {
-    "name": "DogCats",
+    "name": "DOGGY",
     "slug": "DogCats",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/img/logo-inicio-png.png",
+    "icon": "./assets/img/LOGO2.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/img/splash.png",
+      "resizeMode": "contain"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -29,7 +28,7 @@
         "ACCESS_FINE_LOCATION"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/logo-inicio-png.png",
+        "foregroundImage": "./assets/img/LOGO2.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.jaime.dogscats",

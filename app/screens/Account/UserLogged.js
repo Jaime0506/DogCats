@@ -21,6 +21,7 @@ export default function UserLogged() {
         })()
         setReloadUserInfo(false);
     }, [reloadUserInfo])
+    
     return(
         <View style={styles.viewUserInfo}>
             {userInfo && <InfoUser 
