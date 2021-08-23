@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native'
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView, Dimensions, Linking } from 'react-native'
+import { Button, ListItem } from 'react-native-elements';
 
 import { firebaseApp } from "../../utils/firebase";
 import firebase from 'firebase/app';
@@ -8,7 +8,7 @@ import "firebase/firestore";
 
 import CarouselImages from '../../Components/CarouselImages';
 import Loading from '../../Components/Loading';
-import Map from '../../Components/Map';
+import Map, { openAppMap } from '../../Components/Map';
 
 const db = firebase.firestore(firebaseApp);
 
@@ -19,7 +19,6 @@ export default function Adopccion(props) {
     const { id, name } = route.params;
 
     const [dataRegister, setDataRegister] = useState(null);
-    console.log(dataRegister);
 
     useEffect(() => {
         navigation.setOptions({
@@ -40,6 +39,8 @@ export default function Adopccion(props) {
 
     if (!dataRegister) return <Loading isVisible={true} text="Cargando..."/>;
 
+    console.log(dataRegister);
+
     return (
         <ScrollView>
             <CarouselImages
@@ -55,6 +56,8 @@ export default function Adopccion(props) {
                 location={dataRegister.location}
                 name={dataRegister.name}
                 address={dataRegister.address}
+                contact={dataRegister.contact}
+                id={id}
             />
         </ScrollView>
     )
@@ -74,17 +77,71 @@ function TitleRegister(props) {
 };
 
 function RegisterInfo(props){
-    const { location, address, name} = props;
+    const { location, address, name, contact, id } = props;
 
+    const data = [
+        {
+            title: address,
+            iconName: "home-variant",
+            iconType: "material-community",
+            action: () => openAppMap(location),
+        },
+        {
+            title: `+57 ${contact}`,
+            iconName: "phone",
+            iconType: "material-community",
+            action: () => openTell()
+        },
+        {
+            title: `+57 ${contact}`,
+            iconName: "whatsapp",
+            iconType: "material-community",
+            action: () => openWhatsapp()
+        },
+        {
+            title: "prueba@gmail.com",
+            iconType: "material-community",
+            iconName: "email",
+            action: () => openEmail(),
+        }
+    ];
+
+    const openTell = async () => {
+        Linking.openURL(`tel: +57 ${contact}`)
+    };
+    const openWhatsapp = async () => {
+        Linking.openURL(`https://wa.me/+57 ${contact}`)
+    };
+    const openEmail = async () => {
+        Linking.openURL(`mailto:prueba@gmail.com?subject=PROCESO DE ADOPCCION PARA (${id})`) 
+    };
+    
     return (
         <View style={styles.viewAnimalMaps}>
-            <Text style={styles.textUbicacion}>Ubicacion del animal</Text>
+            <Text style={styles.textUbicacion}>Informacion del animal</Text>
             <Map
                 location={location}
                 name={name}
                 height={200}
             />
-            <Text style={styles.textAddress}>Direccion: {address}</Text>
+
+            {
+                data.map((item, index) => (
+                    <ListItem
+                        key={index}
+                        title={item.title}
+                        leftIcon={{
+                            name: item.iconName,
+                            type: item.iconType,
+                            color: "#FF6800"
+                        }}
+                        containerStyle={styles.containerListItem}
+                        onPress={item.action}
+                    >
+
+                    </ListItem>
+                ))
+            }
         </View>
     )
 };
@@ -126,5 +183,9 @@ const styles = StyleSheet.create({
     },
     btnStyle: {
         backgroundColor: "#FF6800",
+    },
+    containerListItem: {
+        borderBottomColor: "#d8d8d8",
+        borderBottomWidth: 1.3,
     }
 });

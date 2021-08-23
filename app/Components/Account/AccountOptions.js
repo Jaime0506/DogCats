@@ -8,6 +8,7 @@ import ChangeEmailForm from "./ChangeEmailForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 
 export default function AccountOptions(props){
+
     const { userInfo, toastRef, setReloadUserInfo } = props;
     const [isVisible, setIsVisible] = useState(false);
     const [renderComponent, setRenderComponent] = useState(null);
@@ -50,6 +51,7 @@ export default function AccountOptions(props){
         }
     }
     const menuOptions = generateOptions(selectComponent);
+
     return(
         <View>
             {map(menuOptions, (menu,index) => (
@@ -76,10 +78,11 @@ export default function AccountOptions(props){
                 </Modal>
             )}
         </View>
-        
     )
 };
+
 function generateOptions (selectComponent) {
+
     return [
         {
             title: "Cambiar Nombre y Apellidos",
@@ -113,6 +116,7 @@ function generateOptions (selectComponent) {
         }
     ]
 };
+
 const styles = StyleSheet.create({
     menuItem: {
         borderBottomWidth: 1.2,

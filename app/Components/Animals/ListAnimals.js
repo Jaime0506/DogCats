@@ -50,7 +50,7 @@ function AnimalData(props) {
                 <View style={styles.viewAnimalImage}>
                     <Image
                         resizeMode="cover"
-                        PlaceholderContent={<ActivityIndicator size="large"/>}
+                        PlaceholderContent={<ActivityIndicator size="large" color="#000"/>}
                         source={
                             firstImage ? 
                                 {uri: firstImage}

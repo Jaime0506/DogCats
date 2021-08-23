@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView, Dimensions, Linking } from 'react-native';
+import { Button, ListItem } from 'react-native-elements';
 
 //import fire store
 
@@ -13,7 +13,7 @@ const db = firebase.firestore(firebaseApp);
 //import components
 import Loading from '../../Components/Loading';
 import CarouselImages from "../../Components/CarouselImages";
-import Map from "../../Components/Map";
+import Map, { openAppMap } from "../../Components/Map";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -71,6 +71,7 @@ export default function Animal(props) {
                 location={dataRegister.location}
                 name={dataRegister.name}
                 addres={dataRegister.addres}
+                contact={dataRegister.contact}
             />
             {mostrar && (
                 <View style={styles.contenedorIcon}>
@@ -84,7 +85,7 @@ export default function Animal(props) {
                         })}
                     />
                 </View>                
-            )}            
+            )}           
         </ScrollView>
     )
 };                
@@ -102,16 +103,60 @@ function TitleRegister(props) {
     )
 };
 function RegisterInfo(props){
-    const { location, addres, name} = props;
+    const { location, addres, name, contact } = props;
+
+    const data = [
+        {
+            text: addres,
+            iconName: "map-marker",
+            iconType: "material-community",
+            action: () => openAppMap(location),
+        },
+        {
+            text: `+57 ${contact}`,
+            iconName: "phone",
+            iconType: "material-community",
+            action: () => openTell()
+        },
+        {
+            text: `+57 ${contact}`,
+            iconName: "whatsapp",
+            iconType: "material-community",
+            action: () => openWhatsapp()
+        }
+    ];
+
+    const openTell = async () => {
+       await Linking.openURL(`tel: +57 ${contact}`) 
+    };
+    const openWhatsapp = async () => {
+       await Linking.openURL(`https://wa.me/+57 ${contact}`)
+    };
 
     return (
         <View style={styles.viewAnimalMaps}>
-            <Text style={styles.textUbicacion}>Ubicacion del animal</Text>
+            <Text style={styles.textUbicacion}>Informacion del animal</Text>
             <Map
                 location={location}
                 name={name}
                 height={200}
             />
+            {
+                data.map ((item, index) => (
+                    <ListItem
+                        key={index}
+                        title={item.text}
+                        leftIcon={{
+                            name: item.iconName,
+                            type: item.iconType,
+                            color: "#FF6800"
+                        }}            
+                        containerStyle={styles.containerListItem}
+                        onPress={item.action}
+                    >
+                    </ListItem>  
+                ))
+            }
         </View>
     )
 }
@@ -150,4 +195,8 @@ const styles = StyleSheet.create({
     btnStyle: {
         backgroundColor: "#FF6800",
     },
+    containerListItem: {
+        borderBottomColor: "#d8d8d8",
+        borderBottomWidth: 1.3,
+    }
 })

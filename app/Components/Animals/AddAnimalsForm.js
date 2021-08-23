@@ -23,6 +23,7 @@ export default function AddAnimalsForm(props){
     const [dataName, setDataName] = useState("");
     const [dataDireccion, setDataDireccion] = useState("");
     const [dataDescrippcions, setDataDescrippcions] = useState("");
+    const [dataContact, setDataContact] = useState("");
     const [imageSelected, setImageSelected] = useState([]);
     const [isVisible, setIsVisible] = useState(false);
     const [locationRestaurant, setLocationRestaurant] = useState(null);
@@ -31,11 +32,12 @@ export default function AddAnimalsForm(props){
 
     const onSubmit = () => {
         setErrors({});
-        if (!dataName || !dataDireccion || !dataDescrippcions){
+        if (!dataName || !dataDireccion || !dataDescrippcions || !dataContact){
             setErrors({
                 name: !dataName ? "Todos los campos son obligatorios" : "",
                 addres: !dataDireccion ? "Todos los campos son obligatorios" : "",
                 descripccion: !dataDescrippcions ? "Todos los campos son obligatorios" : "",
+                contact: !dataContact ? "Todos los campos son obligatorios" : "",
             });
         } else if (size(imageSelected) === 0) {
             toastRef.current.show("El Animal debe tener almenos una imagen");
@@ -51,6 +53,7 @@ export default function AddAnimalsForm(props){
                     .add({
                         name: dataName,
                         addres: dataDireccion,
+                        contact: dataContact,
                         descripccion: dataDescrippcions,
                         location: locationRestaurant,
                         images: response,
@@ -87,7 +90,8 @@ export default function AddAnimalsForm(props){
             })
         );
         return imageBlob;
-    }
+    };
+
     return(
         <ScrollView style={styles.scrollView}>
             <ImageAnimal
@@ -98,6 +102,8 @@ export default function AddAnimalsForm(props){
                 setDataDireccion={setDataDireccion}
                 setDataDescrippcions={setDataDescrippcions}
                 setIsVisible={setIsVisible}
+                setDataContact={setDataContact}
+                dataContact={dataContact}
                 locationRestaurant={locationRestaurant}
                 error={error}
             />
@@ -138,6 +144,8 @@ function FormAdd(props){
         setDataName,
         setDataDireccion,
         setDataDescrippcions,
+        setDataContact,
+        dataContact,
         setIsVisible,
         locationRestaurant, error } = props;
 
@@ -160,6 +168,18 @@ function FormAdd(props){
                     onPress: () => setIsVisible(true)
                 }}
                 errorMessage={error.addres}
+            />
+            <Input
+                placeholder="Telefono de contacto"
+                containerStyle={styles.input}
+                onChange={e => setDataContact(e.nativeEvent.text)}
+                rightIcon={{
+                    type: "material-community",
+                    name: "phone",
+                    color: dataContact ? "#FF6800" : "#c2c2c2",
+                }}
+                keyboardType="numeric"
+                errorMessage={error.contact}
             />
             <Input
                 placeholder="Descripccion de las Condiciones en las que se encuentra"

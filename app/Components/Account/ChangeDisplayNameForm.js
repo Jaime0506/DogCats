@@ -4,12 +4,14 @@ import {Input, Button} from "react-native-elements";
 import * as firebase from "firebase";
 
 export default function ChangeDisplayNameForm(props){
+
     const {setIsVisible, toastRef, displayName, setReloadUserInfo} = props;
     const [newDisplayName, setNewDisplayName] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const onSubmit = () => {
+
         setError(null);
         if (!newDisplayName) {
             setError("El nombre no puede estar vacio");
@@ -17,9 +19,11 @@ export default function ChangeDisplayNameForm(props){
             setError("El nombre no puede ser igual al actual");
         } else {
             setLoading(true);
+
             const update = {
                 displayName: newDisplayName
-            }
+            };
+            
             firebase
                 .auth()
                 .currentUser

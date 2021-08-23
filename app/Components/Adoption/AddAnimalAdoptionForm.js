@@ -55,6 +55,7 @@ export default function AddAnimalAdoptionForm(props) {
                     .add({
                         name: data.name,
                         address: data.address,
+                        contact: data.contact,
                         description: data.description,
                         location: locationAnimal,
                         images: response,
@@ -102,7 +103,7 @@ export default function AddAnimalAdoptionForm(props) {
                 toastRef.current.show("Se ha transferido el registro correctamente");
             });
         navigation.navigate("animals");
-    }
+    };
 
     return (
         <ScrollView>
@@ -115,6 +116,7 @@ export default function AddAnimalAdoptionForm(props) {
                 onSubmit={onSubmit}
                 setIsVisible={setIsVisible}
                 error={error}
+                contact={data.contact}
             />
             <UploadImage
                 setImageSelected={setImageSelected}
@@ -122,7 +124,7 @@ export default function AddAnimalAdoptionForm(props) {
                 toastRef={toastRef}
             />
             <Button
-                title="Subir registro"
+                title="Actualizar registro"
                 containerStyle={styles.containerBtn}
                 buttonStyle={styles.btnStyles}
                 onPress={onSubmit}                    
@@ -151,7 +153,7 @@ function ImageAnimal(props){
 };
 
 function FormData(props) {
-    const {id, name, onChange, locationAnimal, setIsVisible, error} = props;   
+    const { onChange, locationAnimal, setIsVisible, error, contact } = props;   
 
     return (
         <View>
@@ -175,10 +177,16 @@ function FormData(props) {
                     errorMessage={error.address}
                 />
                 <Input
-                    placeholder="Medios de contacto de la fundacion"
+                    placeholder="Telefono de contacto"
                     onChange={(e) => onChange(e,"contact")}
                     containerStyle={styles.input}
+                    rightIcon={{
+                        type: "material-community",
+                        name: "phone",
+                        color: contact ? "#FF6800" : "#c2c2c2",
+                    }}
                     errorMessage={error.contact}
+                    keyboardType="numeric"
                 />
                 <Input
                     placeholder="Descripccion breve de los tratamientos resividos por la mascota"
